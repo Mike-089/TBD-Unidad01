@@ -1,0 +1,127 @@
+MySQL Shell 8.0.38
+
+Copyright (c) 2016, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.39 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use tbd_e1
+Default schema set to `tbd_e1`.
+Fetching global names, object names from `tbd_e1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > desc student;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| name       | varchar(50)  | YES  |     | NULL    |       |
+| ssn        | varchar(11)  | YES  |     | NULL    |       |
+| home_phone | varchar(8)   | YES  |     | NULL    |       |
+| address    | varchar(100) | YES  |     | NULL    |       |
+| age        | int          | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+5 rows in set (0.0027 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > insert into student
+                                       -> value( "Juan Perez", "00-11", "001122",
+                                       -> "av industrias 11101", 50);
+Query OK, 1 row affected (0.0356 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > insert into student  values( "x", "x", "x", "x",0, "Y","y","y","y",1);
+ERROR: 1136 (21S01): Column count doesn't match value count at row 1
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > insert into student  values( "x", "x", "x", "x",0), ("Y","y","y","y",1);
+Query OK, 2 rows affected (0.0085 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > insert into student (name)
+                                       -> value ('Pedro');
+Query OK, 1 row affected (0.0082 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > insert into student (name)  values ('Juan'), ('xxx');
+Query OK, 2 rows affected (0.0070 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > select * from student;
++------------+-------+------------+---------------------+------+
+| name       | ssn   | home_phone | address             | age  |
++------------+-------+------------+---------------------+------+
+| Juan Perez | 00-11 | 001122     | av industrias 11101 |   50 |
+| x          | x     | x          | x                   |    0 |
+| Y          | y     | y          | y                   |    1 |
+| Pedro      | NULL  | NULL       | NULL                | NULL |
+| Juan       | NULL  | NULL       | NULL                | NULL |
+| xxx        | NULL  | NULL       | NULL                | NULL |
++------------+-------+------------+---------------------+------+
+6 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > select name, snn from student;
+ERROR: 1054 (42S22): Unknown column 'snn' in 'field list'
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > select name, ssn from student;
++------------+-------+
+| name       | ssn   |
++------------+-------+
+| Juan Perez | 00-11 |
+| x          | x     |
+| Y          | y     |
+| Pedro      | NULL  |
+| Juan       | NULL  |
+| xxx        | NULL  |
++------------+-------+
+6 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > select count(*) from student;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.0059 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > select * from student limit 2;
++------------+-------+------------+---------------------+-----+
+| name       | ssn   | home_phone | address             | age |
++------------+-------+------------+---------------------+-----+
+| Juan Perez | 00-11 | 001122     | av industrias 11101 |  50 |
+| x          | x     | x          | x                   |   0 |
++------------+-------+------------+---------------------+-----+
+2 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > create table automovi(
+                                       -> marca varchar (20),
+                                       -> modelo varchar (50),
+                                       -> ano int,
+                                       -> precio decimal(20,2),
+                                       -> vin varchar (20),
+                                       -> color varchar (12));
+Query OK, 0 rows affected (0.0490 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > show tables;
++------------------+
+| Tables_in_tbd_e1 |
++------------------+
+| automovi         |
+| primer_tabla     |
+| student          |
++------------------+
+3 rows in set (0.0020 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > desc automovi;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| marca  | varchar(20)   | YES  |     | NULL    |       |
+| modelo | varchar(50)   | YES  |     | NULL    |       |
+| ano    | int           | YES  |     | NULL    |       |
+| precio | decimal(20,2) | YES  |     | NULL    |       |
+| vin    | varchar(20)   | YES  |     | NULL    |       |
+| color  | varchar(12)   | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+6 rows in set (0.0025 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > insert into automovi  value( "Ford", "fiesta", 2004, 32000.45, '1100114', 'azul');
+Query OK, 1 row affected (0.0083 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL > select * from automovi
+                                       -> ;
++-------+--------+------+----------+---------+-------+
+| marca | modelo | ano  | precio   | vin     | color |
++-------+--------+------+----------+---------+-------+
+| Ford  | fiesta | 2004 | 32000.45 | 1100114 | azul  |
++-------+--------+------+----------+---------+-------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tbd_e1  SQL >
